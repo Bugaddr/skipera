@@ -127,6 +127,8 @@ def deep_blank_model(model_cls):
     for name, field in model_cls.model_fields.items():
         if hasattr(field.annotation, '__fields__'):
             data[name] = deep_blank_model(field.annotation)
+        elif field.annotation == Literal[""]:
+            data[name] = ""
         else:
             data[name] = None
     return data
