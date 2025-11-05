@@ -51,8 +51,8 @@ class GradedSolver(object):
                             logger.error("Could not submit the assignment. Please file an issue.")
 
                         else:
-                            logger.debug("Waiting 3 seconds for grading..")
-                            time.sleep(3)  # delay for grading process
+                            logger.debug("Waiting 5 seconds for grading..")
+                            time.sleep(5)  # delay for grading process
                             if not self.get_grade():
                                 logger.error("Sorry! Could not pass the assignment, maybe use a better model.")
 
@@ -211,6 +211,9 @@ class GradedSolver(object):
         }).json()
 
         outcome = res["data"]["SubmissionState"]["queryState"]["outcome"]
+
+        if outcome is None:
+            logger.debug("Grading is not complete yet. Skipping grade check [check manually]")
 
         logger.debug(f"Achieved {outcome['earnedGrade']} grade. Passed? {outcome['isPassed']}")
 
